@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sims NBA</title>
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--ink:#14171c;--mute:#5f6672;--line:#e2e5ea;--acc:#2f5bd3;--band:#c9d6f7;--real:#b4530a;--chip:#e9ecf1;--ok:#1f7a45;--no:#a23b3b}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--ink:#eef0f3;--mute:#9aa3b0;--line:#2a2f38;--acc:#7ea2ff;--band:#2c3d6b;--real:#f0a35c;--chip:#242932;--ok:#5fc48a;--no:#e07a7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 14px 0;border-bottom:1px solid var(--line)}
+.hwrap{max-width:640px;margin:0 auto}
+h1{font-size:20px;margin:0}
+.sub{color:var(--mute);font-size:13px;margin-top:2px}
+.dias{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.dias::-webkit-scrollbar{display:none}
+.dia{flex:0 0 auto;border:0;background:var(--chip);padding:8px 14px;border-radius:999px;font-size:15px}
+.dia.on{background:var(--acc);color:#fff}
+.tabs{display:flex;margin-top:6px}
+.tab{flex:1;border:0;background:none;color:var(--mute);padding:10px;font-size:15px;border-bottom:3px solid transparent}
+.tab.on{color:var(--ink);border-color:var(--acc);font-weight:600}
+main{padding:12px 12px 40px;max-width:640px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.top{display:block;width:100%;text-align:left;background:none;border:0;padding:14px}
+.r1{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.match{font-size:19px;font-weight:700}
+.hora{color:var(--mute);font-size:13px;white-space:nowrap}
+.score{font-size:14px;color:var(--real);font-weight:600;margin-top:2px}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{background:var(--chip);border-radius:8px;padding:5px 9px;font-size:13px}
+.pill b{font-weight:700}
+.more{display:flex;justify-content:center;color:var(--mute);font-size:12px;margin-top:8px}
+.card.open .more span{transform:rotate(180deg)}
+.more span{display:inline-block;transition:transform .2s;margin-left:4px}
+.body{display:none;padding:0 14px 14px}
+.card.open .body{display:block}
+.sec{border-top:1px solid var(--line);padding:14px 0 6px}
+.sec h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:0 0 8px}
+.big{font-size:18px;font-weight:650}
+.rng{color:var(--mute);font-size:14px;margin-top:2px}
+.realtxt{color:var(--real);font-size:14px;font-weight:600;margin-top:6px}
+.note{color:var(--mute);font-size:12px;margin-top:6px;font-style:italic}
+.bar{position:relative;height:34px;margin:14px 4px 4px}
+.trk{position:absolute;left:0;right:0;top:12px;height:6px;background:var(--chip);border-radius:3px}
+.band{position:absolute;top:10px;height:10px;background:var(--band);border-radius:5px}
+.med{position:absolute;top:5px;width:3px;height:20px;background:var(--acc);border-radius:2px;margin-left:-1.5px}
+.lin{position:absolute;top:2px;height:26px;border-left:2px dashed var(--mute);margin-left:-1px}
+.lin i{position:absolute;top:-14px;left:-14px;font-size:10px;color:var(--mute);font-style:normal}
+.rmk{position:absolute;top:6px;width:12px;height:12px;border-radius:50%;background:var(--real);margin-left:-6px;border:2px solid var(--card)}
+.ax{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin:0 4px}
+table{width:100%;border-collapse:collapse}
+.vs td,.vs th{padding:7px 4px;font-size:14px;text-align:right;border-bottom:1px solid var(--line)}
+.vs th{font-size:12px;color:var(--mute);font-weight:500}
+.vs td:first-child,.vs th:first-child{text-align:left}
+.vs tr:last-child td{border-bottom:0}
+.lado{font-size:13px;margin-top:6px}
+.ok{color:var(--ok);font-weight:600}.no{color:var(--no);font-weight:600}
+.tt{display:flex;gap:6px;margin-bottom:8px}
+.tt button{flex:1;border:1px solid var(--line);background:none;border-radius:9px;padding:8px;font-size:14px}
+.tt button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.bx th{font-size:11px;color:var(--mute);font-weight:500;text-align:right;padding:4px 2px;border-bottom:1px solid var(--line)}
+.bx th:first-child{text-align:left}
+.bx td{font-size:14px;text-align:right;padding:8px 2px;border-bottom:1px solid var(--line);vertical-align:top}
+.bx td:first-child{text-align:left;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bx tr.p{cursor:pointer}
+.bx tr.p.sel td{background:var(--chip)}
+.bx small{display:block;color:var(--real);font-size:12px;font-weight:600}
+.bx tr.rg td{font-size:12px;color:var(--mute);padding:4px 2px 8px;background:var(--chip)}
+.bx tr.rg td:first-child{font-style:italic}
+.leg{font-size:12px;color:var(--mute);margin-top:6px}
+.leg b{color:var(--real)}
+ul.bj{margin:0;padding-left:18px;font-size:14px}
+ul.bj li{margin:3px 0}
+.bjt{font-size:13px;font-weight:600;margin:8px 0 2px}
+.vacio{color:var(--mute);font-size:14px}
+.reg .card{padding:16px}
+.kpi{display:flex;gap:10px;margin:10px 0}
+.kpi div{flex:1;background:var(--chip);border-radius:10px;padding:10px}
+.kpi b{display:block;font-size:22px}
+.kpi span{font-size:12px;color:var(--mute)}
+.ventaja{font-size:17px;font-weight:700;margin-top:4px}
+.err{background:var(--card);border:1px solid var(--no);border-radius:14px;padding:14px;color:var(--ink)}
+footer{color:var(--mute);font-size:12px;text-align:center;padding:10px 16px 30px}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <h1>Sims NBA</h1>
+  <div class="sub" id="sub">Cargando...</div>
+  <div class="dias" id="dias"></div>
+  <div class="tabs"><button class="tab on" data-t="p">Partidos</button><button class="tab" data-t="r">Registro</button></div>
+</div></header>
+<main id="main"></main>
+<footer id="pie">Simulador B · 10.000 simulaciones por partido · margen calibrado</footer>
+
+<script>
+/* Los datos NO estan en esta pagina: salen de datos/indice.json y datos/AAAA-MM-DD.json (los arma la 21d / 21e desde el registro de Drive). */
+let INDICE=null;const CACHE={};
+let diaSel=0,tabSel='p';
+const abiertos=new Set(),equipoSel={},jugSel={};
+
+/* ---------- utilidades ---------- */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=x=>typeof x==='number'&&isFinite(x);
+const fmt=(x,d=1)=>(Math.round(x*10**d)/10**d).toFixed(d).replace('.',',');
+const nf=x=>num(x)?(Number.isInteger(x)?String(x):fmt(x,1)):'sin dato';
+const ln=v=>num(v)?((v>0?'+':v<0?'−':'')+fmt(Math.abs(v),1)):'sin dato';
+const pc=x=>num(x)?((Number.isInteger(x)?x:fmt(x,1))+'%'):'sin dato';
+const imp=c=>num(c)&&c>0?pc(Math.round(1000/c)/10):'sin cuota';
+const quien=(p,v)=>!num(v)?'sin dato':v>0?`${esc(p.loc)} por ${fmt(v)}`:v<0?`${esc(p.vis)} por ${fmt(-v)}`:'empate';
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+function etiqueta(f){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(f||'');if(!m)return esc(f||'?');const d=new Date(+m[1],+m[2]-1,+m[3],12);return `${DS[d.getDay()]} ${m[3]}/${m[2]}`}
+
+/* ---------- barra de rango ---------- */
+function barra(lo,hi,med,linea,lo0,hi0,real){
+  if(![lo,hi,med].every(num))return '';
+  const x=v=>Math.max(0,Math.min(100,(v-lo0)/(hi0-lo0)*100));
+  return `<div class="bar"><div class="trk"></div><div class="band" style="left:${x(lo)}%;width:${x(hi)-x(lo)}%"></div>`+
+   (num(linea)?`<div class="lin" style="left:${x(linea)}%"><i>línea</i></div>`:'')+
+   `<div class="med" style="left:${x(med)}%"></div>`+(num(real)?`<div class="rmk" style="left:${x(real)}%"></div>`:'')+`</div>`;
+}
+
+/* ---------- partido abierto ---------- */
+function secMargen(p,res){
+  const m=p.marg,s=p.spread;
+  if(!m||!num(m.med))return `<div class="sec"><h3>Margen</h3><div class="vacio">sin dato</div></div>`;
+  const lineaM=s&&num(s.loc)?-s.loc:null;
+  const rm=res?p.real.loc-p.real.vis:null;
+  let h=`<div class="sec"><h3>Margen</h3><div class="big">${quien(p,m.med)}</div>
+   <div class="rng">Rango p10–p90: ${quien(p,m.p10)} a ${quien(p,m.p90)}</div>
+   ${barra(m.p10,m.p90,m.med,lineaM,-25,25,rm)}<div class="ax"><span>← gana ${esc(p.vis)}</span><span>0</span><span>gana ${esc(p.loc)} →</span></div>`;
+  if(s&&num(s.loc)){
+    h+=`<table class="vs" style="margin-top:8px"><tr><th>Spread</th><th>Simulador</th><th>Casa</th></tr>
+     <tr><td>${esc(p.loc)} ${ln(s.loc)}</td><td>${pc(s.simLoc)}</td><td>${imp(s.cLoc)}</td></tr>
+     <tr><td>${esc(p.vis)} ${ln(-s.loc)}</td><td>${pc(s.simVis)}</td><td>${imp(s.cVis)}</td></tr></table>`;
+    if(res){
+      if(rm===lineaM)h+=`<div class="realtxt">Real: ${quien(p,rm)} · igual a la línea</div>`;
+      else if(num(s.simLoc)&&num(s.simVis)&&s.simLoc!==s.simVis){
+        const cubreLoc=rm>lineaM,simLoc=s.simLoc>s.simVis,ac=cubreLoc===simLoc;
+        h+=`<div class="realtxt">Real: ${quien(p,rm)} · cubrió ${esc(cubreLoc?p.loc:p.vis)}</div><div class="lado">Lado del simulador (${esc(simLoc?p.loc:p.vis)}): <span class="${ac?'ok':'no'}">${ac?'acertó':'no acertó'}</span></div>`;
+      }else h+=`<div class="realtxt">Real: ${quien(p,rm)}</div>`;
+    }
+  }else{
+    h+=`<div class="vacio" style="margin-top:8px">Sin línea de spread: no se compara con la casa.</div>`;
+    if(res)h+=`<div class="realtxt">Real: ${quien(p,rm)}</div>`;
+  }
+  return h+`</div>`;
+}
+function secTotal(p,res){
+  const t=p.total;
+  if(!t||!num(t.med))return `<div class="sec"><h3>Total</h3><div class="vacio">sin dato</div></div>`;
+  const rt=res?p.real.loc+p.real.vis:null,tl=num(t.linea);
+  let h=`<div class="sec"><h3>Total</h3><div class="big">${fmt(t.med)}</div><div class="rng">Rango p10–p90: ${nf(t.p10)} a ${nf(t.p90)}</div>`;
+  if(tl)h+=`${barra(t.p10,t.p90,t.med,t.linea,t.linea-35,t.linea+35,rt)}<div class="ax"><span>${nf(t.linea-35)}</span><span>${nf(t.linea+35)}</span></div>
+   <table class="vs" style="margin-top:8px"><tr><th>Total</th><th>Simulador</th><th>Casa</th></tr>
+   <tr><td>Over ${fmt(t.linea)}</td><td>${pc(t.over)}</td><td>${imp(t.cO)}</td></tr>
+   <tr><td>Under ${fmt(t.linea)}</td><td>${pc(t.under)}</td><td>${imp(t.cU)}</td></tr></table>`;
+  else h+=`<div class="vacio" style="margin-top:8px">Sin línea de total: no se compara con la casa.</div>`;
+  if(res){
+    if(tl&&rt===t.linea)h+=`<div class="realtxt">Real: ${rt} · igual a la línea</div>`;
+    else if(tl&&num(t.over)&&num(t.under)&&t.over!==t.under){const ov=rt>t.linea,simO=t.over>t.under,ac=ov===simO;
+      h+=`<div class="realtxt">Real: ${rt} · ${ov?'over':'under'}</div><div class="lado">Lado del simulador (${simO?'over':'under'}): <span class="${ac?'ok':'no'}">${ac?'acertó':'no acertó'}</span></div>`;
+    }else h+=`<div class="realtxt">Real: ${rt}</div>`;
+  }
+  if(INDICE&&INDICE.nota_total)h+=`<div class="note">${esc(INDICE.nota_total)}</div>`;
+  return h+`</div>`;
+}
+function secGanador(p,res){
+  const g=p.gana;
+  if(!g||!num(g.loc))return `<div class="sec"><h3>Ganador</h3><div class="vacio">sin dato</div></div>`;
+  let h=`<div class="sec"><h3>Ganador</h3><table class="vs"><tr><th>Equipo</th><th>Simulador</th><th>Casa</th></tr>
+   <tr><td>${esc(p.loc)}</td><td>${pc(g.loc)}</td><td>${imp(g.cLoc)}</td></tr><tr><td>${esc(p.vis)}</td><td>${pc(100-g.loc)}</td><td>${imp(g.cVis)}</td></tr></table>`;
+  if(res)h+=`<div class="realtxt">Real: ganó ${esc(p.real.loc>p.real.vis?p.loc:p.vis)}</div>`;
+  return h+`</div>`;
+}
+function secBox(p,i,res){
+  const eq=(equipoSel[i]===p.vis||equipoSel[i]===p.loc)?equipoSel[i]:p.vis;
+  let h=`<div class="sec"><h3>Box score proyectado</h3><div class="tt">${[p.vis,p.loc].map(e=>`<button data-eq="${i}|${esc(e)}" class="${e===eq?'on':''}">${esc(e)}</button>`).join('')}</div>`;
+  const L=p.jug&&p.jug[eq];
+  if(!Array.isArray(L)||!L.length)return h+`<div class="vacio">sin dato</div></div>`;
+  h+=`<table class="bx"><tr><th>Jugador</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>3PT</th></tr>`;
+  L.forEach((j,k)=>{
+    const key=`${i}|${eq}|${k}`,sel=jugSel[key],R=res&&j.real?j.real:null;
+    const dnp=!!(R&&R.dnp);
+    const c=(v,rv,esMin)=>nf(v)+(res?`<small>${dnp?(esMin?'no jugó':'–'):(num(rv)?nf(rv):'sin dato')}</small>`:'');
+    h+=`<tr class="p${sel?' sel':''}" data-j="${esc(key)}"><td>${esc(j.n)}</td><td>${c(j.min,R&&R.min,true)}</td><td>${c(j.pts,R&&R.pts)}</td><td>${c(j.reb,R&&R.reb)}</td><td>${c(j.ast,R&&R.ast)}</td><td>${c(j.tp,R&&R.tp)}</td></tr>`;
+    if(sel){const r=j.r||{};h+=`<tr class="rg"><td>rango p10–p90</td>${['min','pts','reb','ast','tp'].map(s=>`<td>${Array.isArray(r[s])&&num(r[s][0])&&num(r[s][1])?nf(r[s][0])+'–'+nf(r[s][1]):'sin dato'}</td>`).join('')}</tr>`}
+  });
+  return h+`</table><div class="leg">Mediana. Tocá un jugador para ver su rango.${res?' <b>Abajo, en color: lo real.</b>':''}</div></div>`;
+}
+function secBajas(p){
+  const b=p.bajas||{};
+  const li=a=>Array.isArray(a)&&a.length?`<ul class="bj">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<div class="vacio">${Array.isArray(a)?'Ninguno':'sin dato'}</div>`;
+  let h=`<div class="sec"><h3>Bajas del día</h3><div class="bjt">Fuera</div>${li(b.fuera)}<div class="bjt">Sumados a mano</div>${li(b.sumar)}<div class="bjt">Sacados por el filtro (2 de los últimos 3)</div>${li(b.filtrados)}</div>`;
+  if(Array.isArray(p.avisos)&&p.avisos.length)h+=`<div class="sec"><h3>Avisos de la corrida</h3>${li(p.avisos)}</div>`;
+  return h;
+}
+function cuerpo(p,d,i){
+  const res=!!(d.resultados&&p.real&&num(p.real.loc)&&num(p.real.vis));
+  return secMargen(p,res)+secTotal(p,res)+secGanador(p,res)+secBox(p,i,res)+secBajas(p);
+}
+function tarjeta(p,d,i){
+  const res=!!(d.resultados&&p.real&&num(p.real.loc)&&num(p.real.vis));
+  const g=p.gana&&num(p.gana.loc)?p.gana:null,fav=g?(g.loc>=50?[p.loc,g.loc]:[p.vis,100-g.loc]):null;
+  const s=p.spread,t=p.total;
+  return `<div class="card${abiertos.has(i)?' open':''}"><button class="top" data-c="${i}">
+   <div class="r1"><span class="match">${esc(p.vis)} @ ${esc(p.loc)}</span><span class="hora">${p.hora?esc(p.hora)+' h':''}</span></div>
+   ${p.nota?`<div class="note">${esc(p.nota)}</div>`:''}
+   ${res?`<div class="score">Final: ${esc(p.vis)} ${p.real.vis} – ${p.real.loc} ${esc(p.loc)}</div>`:''}
+   <div class="pills"><span class="pill">Gana <b>${fav?esc(fav[0])+' '+pc(fav[1]):'sin dato'}</b></span>
+   <span class="pill">Margen <b>${p.marg?quien(p,p.marg.med):'sin dato'}</b>${s&&num(s.loc)?` · línea ${esc(p.loc)} ${ln(s.loc)}`:''}</span>
+   <span class="pill">Total <b>${t&&num(t.med)?fmt(t.med):'sin dato'}</b>${t&&num(t.linea)?` · línea ${fmt(t.linea)}`:''}</span></div>
+   <div class="more">${abiertos.has(i)?'Cerrar':'Ver detalle'}<span>▾</span></div></button>
+   <div class="body">${abiertos.has(i)?cuerpo(p,d,i):''}</div></div>`;
+}
+function registro(){
+  const R=INDICE&&INDICE.registro;
+  if(!R)return `<div class="reg"><div class="card"><div class="vacio">sin dato: todavía no hay resumen de la 21e.</div></div></div>`;
+  const ee=n=>fmt(Math.sqrt(.25/n)*100)+'%';
+  const k=(x,lab)=>x&&num(x.ac)&&num(x.n)&&x.n>0?`<div><b>${x.ac} de ${x.n}</b><span>${lab} · ${pc(Math.round(x.ac/x.n*1000)/10)} · EE ${num(x.ee)?fmt(x.ee)+'%':ee(x.n)}</span></div>`:`<div><b>sin dato</b><span>${lab}</span></div>`;
+  const v=R.ventaja===false?'Ventaja: todavía no':R.ventaja===true?'Ventaja: sí':'Ventaja: sin dato';
+  const ex=Array.isArray(R.excluidos)?R.excluidos:[];
+  return `<div class="reg"><div class="card"><h3 style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">Registro${R.desde?' desde el '+esc(R.desde):''}</h3>
+   <div class="kpi">${k(R.spread,'Spread')}${k(R.total,'Total')}</div>
+   <div class="ventaja">${v}</div>
+   <div class="rng">Hace falta más de 52,4 % y más de 2 errores estándar, con muchos más partidos.</div>
+   ${R.nota?`<div class="note">${esc(R.nota)}</div>`:''}
+   ${ex.map(e=>`<div class="note">${esc(e)}</div>`).join('')}
+   ${R.actualizado?`<div class="note">${esc(R.actualizado)}</div>`:''}</div></div>`;
+}
+
+/* ---------- carga y dibujo ---------- */
+async function pedir(ruta){
+  const r=await fetch(ruta,{cache:'no-cache'});
+  if(!r.ok)throw new Error(ruta+': HTTP '+r.status);
+  return r.json();
+}
+function error(msg){document.getElementById('main').innerHTML=`<div class="err"><b>No pude cargar los datos.</b><div class="rng">${esc(msg)}</div><div class="rng">Probá de nuevo en unos minutos.</div></div>`}
+async function render(){
+  const dias=(INDICE&&INDICE.dias)||[];
+  document.getElementById('dias').innerHTML=dias.map((x,k)=>`<button class="dia${k===diaSel?' on':''}" data-d="${k}">${etiqueta(x.fecha)}</button>`).join('');
+  if(tabSel==='r'){document.getElementById('main').innerHTML=registro();return}
+  const e=dias[diaSel];
+  if(!e){document.getElementById('sub').textContent='Sin días todavía';document.getElementById('main').innerHTML='<div class="vacio">No hay días publicados.</div>';return}
+  let d=CACHE[e.fecha];
+  try{if(!d){d=CACHE[e.fecha]=await pedir('datos/'+e.fecha+'.json')}}
+  catch(x){document.getElementById('sub').textContent='Error';error(String(x.message||x));return}
+  const ps=Array.isArray(d.partidos)?d.partidos:[];
+  document.getElementById('sub').textContent=`${d.corrida?'Corrida de las '+d.corrida+' h · ':''}${ps.length} partidos`+(d.resultados?' · con resultados':'');
+  const av=Array.isArray(d.avisos_dia)&&d.avisos_dia.length?`<details class="card" style="padding:12px 14px"><summary style="cursor:pointer;font-size:14px">Avisos del día (${d.avisos_dia.length})</summary><ul class="bj" style="margin-top:8px">${d.avisos_dia.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>`:'';
+  document.getElementById('main').innerHTML=av+(ps.length?ps.map((p,i)=>tarjeta(p,d,i)).join(''):'<div class="vacio">Sin partidos este día.</div>');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-d],[data-c],[data-eq],[data-j],[data-t]');if(!b)return;
+  if(b.dataset.d!=null){diaSel=+b.dataset.d;abiertos.clear();for(const o of [equipoSel,jugSel])for(const k in o)delete o[k];render()}
+  else if(b.dataset.t){tabSel=b.dataset.t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render()}
+  else if(b.dataset.c!=null){const i=+b.dataset.c;abiertos.has(i)?abiertos.delete(i):abiertos.add(i);render()}
+  else if(b.dataset.eq){const[i,eq]=b.dataset.eq.split('|');equipoSel[i]=eq;render()}
+  else if(b.dataset.j){jugSel[b.dataset.j]=!jugSel[b.dataset.j];render()}
+});
+(async()=>{
+  try{INDICE=await pedir('datos/indice.json')}catch(x){document.getElementById('sub').textContent='Error';error(String(x.message||x));return}
+  if(INDICE.pie)document.getElementById('pie').textContent=INDICE.pie;
+  render();
+})();
+</script>
+</body>
+</html>
