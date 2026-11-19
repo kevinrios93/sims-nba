@@ -79,6 +79,7 @@ table{width:100%;border-collapse:collapse}
 .flt button{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 11px;font-size:13px}
 .flt button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
 .flt .sep{flex:0 0 100%;height:0}
+.fj{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--real);border-radius:6px;font-size:10px;font-weight:500;color:var(--real);vertical-align:middle;white-space:nowrap}
 .vm{display:block;width:100%;margin-top:8px;border:1px solid var(--line);background:none;border-radius:9px;padding:9px;font-size:14px}
 .leg{font-size:12px;color:var(--mute);margin-top:6px}
 .leg b{color:var(--real)}
@@ -196,7 +197,7 @@ function secBox(p,i,res){
     const key=`${i}|${eq}|${k}`,sel=jugSel[key],R=res&&j.real?j.real:null;
     const dnp=!!(R&&R.dnp);
     const c=(v,rv,esMin)=>nf(v)+(res?`<small>${dnp?(esMin?'no jugó':'–'):(num(rv)?nf(rv):'sin dato')}</small>`:'');
-    h+=`<tr class="p${sel?' sel':''}" data-j="${esc(key)}"><td>${esc(j.n)}</td><td>${c(j.min,R&&R.min,true)}</td><td>${c(j.pts,R&&R.pts)}</td><td>${c(j.reb,R&&R.reb)}</td><td>${c(j.ast,R&&R.ast)}</td><td>${c(j.tp,R&&R.tp)}</td></tr>`;
+    h+=`<tr class="p${sel?' sel':''}" data-j="${esc(key)}"><td>${esc(j.n)}${num(j.f)?`<span class="fj">min. fijados ${nf(j.f)}</span>`:''}</td><td>${c(j.min,R&&R.min,true)}</td><td>${c(j.pts,R&&R.pts)}</td><td>${c(j.reb,R&&R.reb)}</td><td>${c(j.ast,R&&R.ast)}</td><td>${c(j.tp,R&&R.tp)}</td></tr>`;
     if(sel){const r=j.r||{};h+=`<tr class="rg"><td>rango p10–p90</td>${['min','pts','reb','ast','tp'].map(s=>`<td>${Array.isArray(r[s])&&num(r[s][0])&&num(r[s][1])?nf(r[s][0])+'–'+nf(r[s][1]):'sin dato'}</td>`).join('')}</tr>`}
   });
   return h+`</table><div class="leg">Mediana. Tocá un jugador para ver su rango.${res?' <b>Abajo, en color: lo real.</b>':''}</div></div>`;
@@ -205,6 +206,7 @@ function secBajas(p){
   const b=p.bajas||{};
   const li=a=>Array.isArray(a)&&a.length?`<ul class="bj">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<div class="vacio">${Array.isArray(a)?'Ninguno':'sin dato'}</div>`;
   let h=`<div class="sec"><h3>Bajas del día</h3><div class="bjt">Fuera</div>${li(b.fuera)}<div class="bjt">Sumados a mano</div>${li(b.sumar)}<div class="bjt">Sacados por el filtro (2 de los últimos 3)</div>${li(b.filtrados)}</div>`;
+  if(Array.isArray(p.minfijos)&&p.minfijos.length)h+=`<div class="sec"><h3>Minutos fijados a mano</h3>${li(p.minfijos)}<div class="note">Estos minutos los puso Kevin, no los calculó el simulador (el resto del equipo se reescala para sumar 240). La 21e informa este partido aparte.</div></div>`;
   if(Array.isArray(p.avisos)&&p.avisos.length)h+=`<div class="sec"><h3>Avisos de la corrida</h3>${li(p.avisos)}</div>`;
   return h;
 }
@@ -225,7 +227,7 @@ function secProps(p,i){
   if(!tot)return h+`<div class="vacio">Ninguna prop cumple el filtro.</div></div>`;
   h+=`<table class="pr"><tr><th>Jugador</th><th>Sim</th><th>Casa</th><th>Dif</th></tr>`;
   for(const x of R.slice(0,N)){
-    h+=`<tr><td>${esc(x.n)}<small>${esc(x.t)} · ${MKT[x.m]||esc(x.m)} ${x.k}+</small></td><td>${pc(x.s)}</td><td>${fmt(x.c,2)}<small>${pc(x.h)}</small></td><td class="${x.d>0?'ok':x.d<0?'no':''}">${num(x.d)?(x.d>0?'+':x.d<0?'−':'')+fmt(Math.abs(x.d),1):'sin dato'}</td></tr>`;
+    h+=`<tr><td>${esc(x.n)}${x.f?'<span class="fj">min. fijados</span>':''}<small>${esc(x.t)} · ${MKT[x.m]||esc(x.m)} ${x.k}+</small></td><td>${pc(x.s)}</td><td>${fmt(x.c,2)}<small>${pc(x.h)}</small></td><td class="${x.d>0?'ok':x.d<0?'no':''}">${num(x.d)?(x.d>0?'+':x.d<0?'−':'')+fmt(Math.abs(x.d),1):'sin dato'}</td></tr>`;
   }
   h+=`</table>`;
   if(tot>N)h+=`<button class="vm" data-pr="${i}|v|1">Ver las ${tot} (hoy muestro ${N})</button>`;
@@ -243,6 +245,7 @@ function tarjeta(p,d,i){
   return `<div class="card${abiertos.has(i)?' open':''}"><button class="top" data-c="${i}">
    <div class="r1"><span class="match">${esc(p.vis)} @ ${esc(p.loc)}</span><span class="hora">${p.hora?esc(p.hora)+' h':''}</span></div>
    ${p.nota?`<div class="note">${esc(p.nota)}</div>`:''}
+   ${Array.isArray(p.minfijos)&&p.minfijos.length?`<div class="note">Minutos fijados a mano en este partido</div>`:''}
    ${res?`<div class="score">Final: ${esc(p.vis)} ${p.real.vis} – ${p.real.loc} ${esc(p.loc)}</div>`:''}
    <div class="pills"><span class="pill">Gana <b>${fav?esc(fav[0])+' '+pc(fav[1]):'sin dato'}</b></span>
    <span class="pill">Margen <b>${p.marg?quien(p,p.marg.med):'sin dato'}</b>${s&&num(s.loc)?` · línea ${esc(p.loc)} ${ln(s.loc)}`:''}</span>
