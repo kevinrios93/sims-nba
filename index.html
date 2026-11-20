@@ -6,22 +6,22 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Sims NBA</title>
 <style>
-:root{--bg:#f3f4f6;--card:#fff;--ink:#14171c;--mute:#5f6672;--line:#e2e5ea;--acc:#2f5bd3;--band:#c9d6f7;--real:#b4530a;--chip:#e9ecf1;--ok:#1f7a45;--no:#a23b3b}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--ink:#eef0f3;--mute:#9aa3b0;--line:#2a2f38;--acc:#7ea2ff;--band:#2c3d6b;--real:#f0a35c;--chip:#242932;--ok:#5fc48a;--no:#e07a7a}}
+:root{--bg:#0d0d10;--card:#17171b;--ink:#f3f1ee;--mute:#a79f98;--line:#2e2925;--acc:#ff7a1a;--band:#7a3a10;--real:#5cc8f2;--chip:#26221f;--ok:#5fc48a;--no:#e07a7a}
+/* tema basquet (20/11): negro y naranja en claro y oscuro; el resultado real va en celeste para no confundirse con el naranja del simulador */
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit;cursor:pointer}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 14px 0;border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#0b0b0d 0%,#2b1305 42%,#e8590c 100%);padding:12px 14px 0;border-bottom:1px solid var(--line)}
 .hwrap{max-width:640px;margin:0 auto}
-h1{font-size:20px;margin:0}
-.sub{color:var(--mute);font-size:13px;margin-top:2px}
+h1{font-size:20px;margin:0;color:#fff;letter-spacing:.02em}
+.sub{color:#f2cfb3;font-size:13px;margin-top:2px}
 .dias{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
 .dias::-webkit-scrollbar{display:none}
-.dia{flex:0 0 auto;border:0;background:var(--chip);padding:8px 14px;border-radius:999px;font-size:15px}
-.dia.on{background:var(--acc);color:#fff}
+.dia{flex:0 0 auto;border:0;background:rgba(255,255,255,.14);color:#fff;padding:8px 14px;border-radius:999px;font-size:15px}
+.dia.on{background:#111;color:#ffb27a;font-weight:600}
 .tabs{display:flex;margin-top:6px}
-.tab{flex:1;border:0;background:none;color:var(--mute);padding:10px;font-size:15px;border-bottom:3px solid transparent}
-.tab.on{color:var(--ink);border-color:var(--acc);font-weight:600}
+.tab{flex:1;border:0;background:none;color:#f2cfb3;padding:10px;font-size:15px;border-bottom:3px solid transparent}
+.tab.on{color:#fff;border-color:#fff;font-weight:600}
 main{padding:12px 12px 40px;max-width:640px;margin:0 auto}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
 .top{display:block;width:100%;text-align:left;background:none;border:0;padding:14px}
@@ -60,7 +60,7 @@ table{width:100%;border-collapse:collapse}
 .ok{color:var(--ok);font-weight:600}.no{color:var(--no);font-weight:600}
 .tt{display:flex;gap:6px;margin-bottom:8px}
 .tt button{flex:1;border:1px solid var(--line);background:none;border-radius:9px;padding:8px;font-size:14px}
-.tt button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.tt button.on{background:var(--acc);border-color:var(--acc);color:#111;font-weight:700}
 .bx th{font-size:11px;color:var(--mute);font-weight:500;text-align:right;padding:4px 2px;border-bottom:1px solid var(--line)}
 .bx th:first-child{text-align:left}
 .bx td{font-size:14px;text-align:right;padding:8px 2px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -77,7 +77,7 @@ table{width:100%;border-collapse:collapse}
 .pr small{display:block;color:var(--mute);font-size:12px;font-weight:400}
 .flt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .flt button{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 11px;font-size:13px}
-.flt button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.flt button.on{background:var(--acc);border-color:var(--acc);color:#111;font-weight:700}
 .flt .sep{flex:0 0 100%;height:0}
 .fj{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--real);border-radius:6px;font-size:10px;font-weight:500;color:var(--real);vertical-align:middle;white-space:nowrap}
 .vm{display:block;width:100%;margin-top:8px;border:1px solid var(--line);background:none;border-radius:9px;padding:9px;font-size:14px}
@@ -253,6 +253,13 @@ function tarjeta(p,d,i){
    <div class="more">${abiertos.has(i)?'Cerrar':'Ver detalle'}<span>▾</span></div></button>
    <div class="body">${abiertos.has(i)?cuerpo(p,d,i):''}</div></div>`;
 }
+function props180(P){
+  if(!P||!Array.isArray(P.filas))return `<div class="rng" style="margin-top:10px">Props: sin dato todavía (falta correr la 21e nueva).</div>`;
+  const fila=x=>`<div style="flex:1 1 45%"><b style="font-size:18px">${esc(x.g)}: ${x.ac} de ${x.n}</b><span>${pc(Math.round(x.ac/x.n*1000)/10)} · EE ${num(x.ee)?fmt(x.ee)+'%':'sin dato'} · punto de equilibrio ${num(x.um)?pc(x.um):'sin dato'}</span></div>`;
+  return `<h3 style="margin:14px 0 0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">Props de cuota ${fmt(P.cuota_min,2)} o más</h3>
+   <div class="kpi" style="flex-wrap:wrap">${P.filas.length?P.filas.map(fila).join(''):'<div><b>sin dato</b><span>todavía no hay props con resultado</span></div>'}</div>
+   <div class="rng">Solo las líneas donde el simulador da más que la casa, una vez cada apuesta. Punto de equilibrio = lo que hay que acertar para no perder (1 / cuota).</div>`;
+}
 function registro(){
   const R=INDICE&&INDICE.registro;
   if(!R)return `<div class="reg"><div class="card"><div class="vacio">sin dato: todavía no hay resumen de la 21e.</div></div></div>`;
@@ -262,6 +269,7 @@ function registro(){
   const ex=Array.isArray(R.excluidos)?R.excluidos:[];
   return `<div class="reg"><div class="card"><h3 style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">Registro${R.desde?' desde el '+esc(R.desde):''}</h3>
    <div class="kpi">${k(R.spread,'Spread')}${k(R.total,'Total')}</div>
+   ${props180(R.props)}
    <div class="ventaja">${v}</div>
    <div class="rng">Hace falta más de 52,4 % y más de 2 errores estándar, con muchos más partidos.</div>
    ${R.nota?`<div class="note">${esc(R.nota)}</div>`:''}
