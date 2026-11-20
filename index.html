@@ -260,6 +260,13 @@ function props180(P){
    <div class="kpi" style="flex-wrap:wrap">${P.filas.length?P.filas.map(fila).join(''):'<div><b>sin dato</b><span>todavía no hay props con resultado</span></div>'}</div>
    <div class="rng">Solo las líneas donde el simulador da más que la casa, una vez cada apuesta. Punto de equilibrio = lo que hay que acertar para no perder (1 / cuota).</div>`;
 }
+function propsTramos(T){
+  if(!Array.isArray(T)||!T.length)return `<div class="rng" style="margin-top:10px">Props por tramo de cuota: sin dato todavía (falta correr la 21e nueva).</div>`;
+  const fila=x=>x.n>0?`<div style="flex:1 1 45%"><b style="font-size:17px">${esc(x.t)}: ${x.ac} de ${x.n}</b><span>${pc(Math.round(x.ac/x.n*1000)/10)} · equilibrio ${num(x.um)?pc(x.um):'sin dato'} · ganancia por unidad ${num(x.gu)?(x.gu>0?'+':'')+fmt(x.gu,2):'sin dato'}</span><span>Solo donde el simulador da más: ${x.ns>0?x.acs+' de '+x.ns+' ('+pc(Math.round(x.acs/x.ns*1000)/10)+')':'sin apuestas'}</span></div>`:`<div style="flex:1 1 45%"><b style="font-size:17px">${esc(x.t)}</b><span>todavía sin apuestas con resultado</span></div>`;
+  return `<h3 style="margin:14px 0 0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">Props por tramo de cuota</h3>
+   <div class="kpi" style="flex-wrap:wrap">${T.map(fila).join('')}</div>
+   <div class="rng">Todas las props con resultado, una vez cada apuesta, a 1 unidad. Cada tramo incluye su cuota de abajo. Equilibrio = lo que hay que acertar para no perder (1 / cuota media).</div>`;
+}
 function registro(){
   const R=INDICE&&INDICE.registro;
   if(!R)return `<div class="reg"><div class="card"><div class="vacio">sin dato: todavía no hay resumen de la 21e.</div></div></div>`;
@@ -270,6 +277,7 @@ function registro(){
   return `<div class="reg"><div class="card"><h3 style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">Registro${R.desde?' desde el '+esc(R.desde):''}</h3>
    <div class="kpi">${k(R.spread,'Spread')}${k(R.total,'Total')}</div>
    ${props180(R.props)}
+   ${propsTramos(R.props_tramos)}
    <div class="ventaja">${v}</div>
    <div class="rng">Hace falta más de 52,4 % y más de 2 errores estándar, con muchos más partidos.</div>
    ${R.nota?`<div class="note">${esc(R.nota)}</div>`:''}
