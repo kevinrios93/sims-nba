@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sims NBA</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0A0A0B}
+body{color:#F2EDE7;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+button{font-family:inherit}
+#app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.top{padding:16px 16px 10px;display:flex;justify-content:space-between;align-items:flex-end}
+.brand{font-weight:800;font-size:24px;letter-spacing:-0.02em;margin:0;color:#FF7A1A}
+.top{border-bottom:3px solid #FF7A1A;margin-bottom:12px}
+.meta{font-size:12px;color:#A8A29B;text-align:right;line-height:1.4}
+.tabs{position:sticky;top:0;z-index:5;background:#0A0A0B;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 12px 12px;border-bottom:1px solid #2A2724}
+.tab{min-height:44px;border:0;border-radius:10px;background:#18181B;color:#D6D0C9;font:600 14px Inter,system-ui,sans-serif;cursor:pointer}
+.tab-on{background:#FF7A1A;color:#0A0A0B}
+.body{flex:1;padding:14px 12px 40px;display:flex;flex-direction:column;gap:12px}
+.h2{font-size:12px;font-weight:800;color:#FF7A1A;text-transform:uppercase;letter-spacing:0.07em;margin:8px 4px 0}
+.card{background:#151517;border:1px solid #2A2724;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.card-fuerte{border-color:#FF9F43;background:#21190F}
+.card-mirar{border-color:#4C9AFF;background:#121B29}
+.card-revisar{border-color:#C9B8F5;background:#1C1826}
+.vacio{color:#B4BDC8;font-size:14px}
+.hl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mk{font-size:12px;color:#9AA4B2;font-weight:600}
+.sel{font-size:16px;font-weight:700;line-height:1.3}
+.sub{font-size:13px;color:#B4BDC8;line-height:1.45}
+.cuota{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:6px;background:#2A313C;color:#EEF1F5;font-size:13px;font-weight:700}
+.bdg{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.bdg-fuerte{background:#FF9F43;color:#1A1205}
+.bdg-mirar{background:#4C9AFF;color:#06152B}
+.bdg-revisar{background:transparent;border:1px solid #C9B8F5;color:#DCD0FA}
+.bdg-nada{color:#8C96A3;padding:5px 2px}
+.aviso{background:#3B2A10;border:2px solid #FF9F43;color:#FFE2C2;border-radius:12px;padding:14px;font-size:15px;line-height:1.45}
+.g-top{display:flex;justify-content:space-between;align-items:baseline}
+.g-t{font-size:18px;font-weight:800;letter-spacing:-0.01em}
+.proj{font-size:13px;color:#E4DED7;background:#1F1D1B;border-left:3px solid #FF7A1A;border-radius:8px;padding:8px 10px}
+.esc{font-size:12px;color:#9AA4B2}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip-d{min-height:44px;padding:6px 12px;border-radius:12px;border:1px solid #2E3643;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
+.chip-in{background:#1F1D1B;color:#F2EDE7;border-color:#3A3631}
+.chip-out{background:#3A1E22;border-color:#E5484D;color:#FFD9DA}
+.chip-n{font-size:13px;font-weight:700}
+.chip-s{font-size:11px;font-weight:600;opacity:0.9}
+.row,.row-fuerte,.row-mirar,.row-revisar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0 0;border-top:1px solid #232A34}
+.row-fuerte{padding:10px;border-radius:10px;background:#2A1E10;border:1px solid #FF9F43}
+.row-mirar{padding:10px;border-radius:10px;background:#122036;border:1px solid #4C9AFF}
+.row-revisar{padding:10px;border-radius:10px;background:#211C2E;border:1px solid #C9B8F5}
+.row-l{display:flex;flex-direction:column;gap:3px;min-width:0}
+.row-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.diff{font-size:12px;font-weight:700;color:#C9D1DB}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid #33302C;background:#151517;color:#D6D0C9;font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
+.pill-on{background:#FF7A1A;color:#0A0A0B;border-color:#FF7A1A}
+.sqs{display:flex;gap:5px;align-items:center}
+.sq{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#FFFFFF}
+.sq-si{background:#17803D}
+.sq-no{background:#B3261E}
+.hits{font-size:12px;color:#C9D1DB;font-weight:600;line-height:1.4}
+.l5{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.nota{font-size:12px;color:#DCD0FA}
+.combo-leg{font-size:14px;font-weight:600;line-height:1.4}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.big{font-size:22px;font-weight:800;letter-spacing:-0.02em}
+.pos{color:#5BD08A;font-weight:800;font-size:16px}
+.neg{color:#FF8A8F;font-weight:800;font-size:16px}
+.tr{display:grid;grid-template-columns:1.25fr 0.8fr 0.8fr 0.8fr 0.85fr;gap:6px;padding:10px 0;border-top:1px solid #232A34;font-size:13px;align-items:center}
+.th{font-size:11px;color:#9AA4B2;font-weight:700;border-top:0;padding-top:0}
+.pos-s{color:#5BD08A;font-weight:700}
+.neg-s{color:#FF8A8F;font-weight:700}
+.bet{display:flex;justify-content:space-between;gap:10px;padding:10px 0 0;border-top:1px solid #232A34;font-size:13px}
+.demo{font-size:11px;color:#8C96A3;text-align:center;margin-top:6px}
+.boxbtn{min-height:44px;border-radius:10px;border:1px solid #FF7A1A;background:#151517;color:#FF7A1A;font:700 14px Inter,system-ui,sans-serif;cursor:pointer}
+.boxbtn-on{background:#FF7A1A;color:#0A0A0B;border-color:#FF7A1A}
+.bx{display:flex;flex-direction:column;background:#101012;border-radius:10px;padding:10px;gap:4px}
+.bx-h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:6px}
+.bx-team{font-size:15px;font-weight:800}
+.bx-r{display:grid;grid-template-columns:2.1fr repeat(5,minmax(0,0.62fr));gap:4px;padding:7px 0;border-top:1px solid #232A34;font-size:13px;color:#DDE3EA;align-items:center}
+.bx-th{font-size:11px;color:#9AA4B2;font-weight:700;border-top:0;padding-top:0}
+.bx-n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script id="datos" type="application/json">{"fecha":"2026-11-23","motor":"Motor v1 (congelado 24/11/2026)","faltan_apuestas":[],"juegos":[],"generado":"","reg":{"principal":[{"t":"Spread","u":"+2.78 u","ac":"3 de 3","pct":"100 %","eq":"52 %","niveles":"Fuerte 1 de 1 (+0.90 u) · Revisar 1 de 1 (+0.99 u) · menos de 3 1 de 1 (+0.89 u)"},{"t":"Total","u":"-1.10 u","ac":"1 de 3","pct":"33 %","eq":"52 %","niveles":"Fuerte 0 de 1 (-1.00 u) · menos de 3 1 de 2 (-0.10 u)"},{"t":"Spread + total","u":"+1.68 u","ac":"4 de 6","pct":"67 %","eq":"52 %","niveles":"Fuerte 1 de 2 (-0.10 u) · Revisar 1 de 1 (+0.99 u) · menos de 3 2 de 3 (+0.79 u)"}],"props":{"PTS":[{"t":"","u":"-75.47 u","ac":"46 de 151","pct":"30 %","eq":"40 %","g":"Todas"},{"t":"","u":"-3.76 u","ac":"29 de 36","pct":"81 %","eq":"90 %","g":"1,01-1,30"},{"t":"","u":"-3.02 u","ac":"6 de 12","pct":"50 %","eq":"68 %","g":"1,31-1,70"},{"t":"","u":"-10.89 u","ac":"6 de 24","pct":"25 %","eq":"44 %","g":"1,71-2,99"},{"t":"","u":"-57.80 u","ac":"5 de 79","pct":"6 %","eq":"11 %","g":"3,00 o más"}],"REB":[{"t":"","u":"-15.57 u","ac":"39 de 111","pct":"35 %","eq":"39 %","g":"Todas"},{"t":"","u":"-1.00 u","ac":"18 de 21","pct":"86 %","eq":"89 %","g":"1,01-1,30"},{"t":"","u":"+2.53 u","ac":"8 de 9","pct":"89 %","eq":"69 %","g":"1,31-1,70"},{"t":"","u":"-8.95 u","ac":"7 de 23","pct":"30 %","eq":"47 %","g":"1,71-2,99"},{"t":"","u":"-8.15 u","ac":"6 de 58","pct":"10 %","eq":"12 %","g":"3,00 o más"}],"AST":[{"t":"","u":"-28.95 u","ac":"24 de 86","pct":"28 %","eq":"31 %","g":"Todas"},{"t":"","u":"-1.36 u","ac":"7 de 9","pct":"78 %","eq":"92 %","g":"1,01-1,30"},{"t":"","u":"-0.02 u","ac":"5 de 7","pct":"71 %","eq":"69 %","g":"1,31-1,70"},{"t":"","u":"+5.18 u","ac":"8 de 12","pct":"67 %","eq":"45 %","g":"1,71-2,99"},{"t":"","u":"-32.75 u","ac":"4 de 58","pct":"7 %","eq":"14 %","g":"3,00 o más"}],"FG3M":[{"t":"","u":"-85.09 u","ac":"34 de 151","pct":"23 %","eq":"33 %","g":"Todas"},{"t":"","u":"-1.46 u","ac":"13 de 16","pct":"81 %","eq":"90 %","g":"1,01-1,30"},{"t":"","u":"-8.34 u","ac":"9 de 21","pct":"43 %","eq":"69 %","g":"1,31-1,70"},{"t":"","u":"-6.59 u","ac":"7 de 22","pct":"32 %","eq":"44 %","g":"1,71-2,99"},{"t":"","u":"-68.70 u","ac":"5 de 92","pct":"5 %","eq":"12 %","g":"3,00 o más"}]},"rec":[],"mias":[],"bets":[],"hist":"Historial (motor anterior, hasta el 23/11): 30 partidos medidos. spread: 15 de 30 · total: 12 de 30 · props: 424 de 1052 · solo informativo. No se mezcla con el registro nuevo.","hasta":"2026-11-24 16:56 UTC"}}</script>
+<script>
+var D = JSON.parse(document.getElementById('datos').textContent);
+var STAT = {PTS:'Puntos', REB:'Rebotes', AST:'Asistencias', FG3M:'Triples'};
+var MKS = ['PTS','REB','AST','FG3M'];
+var NIVTXT = {revisar:['Revisar','bdg bdg-revisar'], fuerte:['Fuerte','bdg bdg-fuerte'], mirar:['A mirar','bdg bdg-mirar'], '':['—','bdg bdg-nada']};
+var S = {tab:'hoy', pg:(D.juegos[0]||{}).id, mk:'PTS', reg:'principal', rmk:'PTS', flags:{}, box:{}};
+D.juegos.forEach(function(g){ S.flags[g.id] = g['def'].slice(); });
+var _h = (location.hash || '').replace('#',''); if (['hoy','partidos','props','registro'].indexOf(_h) >= 0) S.tab = _h;
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function f(x, d){ if (d === undefined) d = 1; if (x === null || x === undefined || isNaN(x)) return '-'; return Number(x).toFixed(d).replace('.', ',').replace('-', '−'); }
+function nivel(d){ return d > 12 ? 'revisar' : d >= 5 ? 'fuerte' : d >= 3 ? 'mirar' : ''; }
+function gById(id){ for (var i=0;i<D.juegos.length;i++) if (D.juegos[i].id===id) return D.juegos[i]; return null; }
+function clave(fl){ return 's' + fl.join(''); }
+function sc(g){ return g.esc[clave(S.flags[g.id])] || g.esc[clave(g['def'])]; }
+function scTodos(g){ var fl = g.cand.map(function(){return 1;}); return g.esc[clave(fl)] || null; }
+function titulo(g){ return g.vis + ' @ ' + g.loc; }
+
+function lineasEv(g, e){
+  e = e || sc(g);
+  return g.L.map(function(r,i){ var p = e.L[i]; var casa = 100/r.c; return {r:r, i:i, p:p, casa:casa, dif:(p===null?-99:p-casa)}; });
+}
+function mejorDe(g, tipo, e){
+  var l = lineasEv(g, e).filter(function(x){ return x.r.t === tipo; });
+  if (!l.length) return null;
+  l.sort(function(a,b){ return b.dif - a.dif; });
+  return l[0];
+}
+function cardClase(n){ return n ? 'card card-' + n : 'card'; }
+function rowClase(n){ return n ? 'row-' + n : 'row'; }
+function difTxt(d){ return (d >= 0 ? '+' : '') + f(d) + ' pts'; }
+function bdg(n){ var b = NIVTXT[n]; return '<span class="'+b[1]+'">'+b[0]+'</span>'; }
+
+function tarjetaLinea(g, x, mercado){
+  var n = nivel(x.dif);
+  return '<div class="'+cardClase(n)+'"><div class="hl-top"><span class="mk">'+esc(titulo(g))+' · '+mercado+'</span>'+bdg(n)+'</div>'+
+    '<div class="sel">'+esc(x.r.sel)+'<span class="cuota">'+f(x.r.c,2)+'</span></div>'+
+    '<div class="sub">Simulador '+f(x.p,0)+' % · Casa '+f(x.casa,0)+' % · <b>'+difTxt(x.dif)+'</b></div>'+
+    (n==='revisar' ? '<div class="nota">Se separa mucho de la casa: chequeá las bajas antes de apostar.</div>' : '')+'</div>';
+}
+function propsEv(g, e){
+  e = e || sc(g);
+  return g.P.map(function(r,i){
+    var p = e.P[i]; var casa = 100/r.c;
+    return {r:r, i:i, g:g, p:p, casa:casa, dif:(p===null?-99:p-casa), juega:(p!==null)};
+  });
+}
+function tarjetaProp(x){
+  var r = x.r, n = nivel(x.dif);
+  return '<div class="'+cardClase(n)+'"><div class="hl-top"><span class="mk">'+esc(titulo(x.g))+' · '+STAT[r.st]+'</span>'+bdg(n)+'</div>'+
+    '<div class="sel">'+esc(r.n)+' '+r.m+'+ '+STAT[r.st].toLowerCase()+'<span class="cuota">'+f(r.c,2)+'</span></div>'+
+    '<div class="sub">Simulador '+f(x.p,0)+' % · Casa '+f(x.casa,0)+' % · <b>'+difTxt(x.dif)+'</b></div>'+
+    (n==='revisar' ? '<div class="nota">Se separa mucho de la casa: chequeá las bajas antes de apostar.</div>' : '')+'</div>';
+}
+
+function chips(g){
+  if (!g.cand.length) return '';
+  var h = '<div class="esc">Injury report · tocá un jugador para marcarlo OUT / JUEGA</div><div class="chips">';
+  g.cand.forEach(function(c,i){
+    var inn = S.flags[g.id][i] === 1;
+    h += '<button class="chip-d '+(inn?'chip-in':'chip-out')+'" onclick="toggle(\''+g.id+'\','+i+')"><span class="chip-n">'+esc(c.n)+'</span><span class="chip-s">'+({P:'Probable',Q:'Questionable',D:'Doubtful'}[c.e])+' · '+(inn?'JUEGA':'OUT')+'</span></button>';
+  });
+  return h + '</div>';
+}
+function toggle(id, i){ S.flags[id][i] = S.flags[id][i] ? 0 : 1; render(); }
+function go(t){ S.tab = t; render(); window.scrollTo(0,0); }
+function set(k, v){ S[k] = v; render(); }
+function toggleBox(id){ S.box[id] = !S.box[id]; render(); }
+
+function txtMargen(g, m){ return m >= 0 ? g.loc + ' por ' + f(m) : g.vis + ' por ' + f(-m); }
+function proyTxt(g, e){ return txtMargen(g, e.pr.margen) + ' · total ' + f(e.pr.total, 0); }
+
+function vistaHoy(){
+  var h = '';
+  if (D.faltan_apuestas && D.faltan_apuestas.length) h += '<div class="aviso"><b>Faltan tus apuestas del '+esc(D.faltan_apuestas.join(', '))+'.</b> Pasáselas a Sonnet, o decile "sin apuestas".</div>';
+  var st = [];
+  D.juegos.forEach(function(g){ ['spread','total'].forEach(function(t){ var x = mejorDe(g, t); if (x && nivel(x.dif)) st.push({g:g, x:x, mk:(t==='spread'?'Spread':'Total')}); }); });
+  st.sort(function(a,b){ return b.x.dif - a.x.dif; });
+  h += '<div class="h2">Spread y total destacados</div>';
+  h += st.length ? st.map(function(s){ return tarjetaLinea(s.g, s.x, s.mk); }).join('') : '<div class="card vacio">Hoy no hay spread ni total destacado.</div>';
+  var ps = [];
+  D.juegos.forEach(function(g){ propsEv(g).forEach(function(x){ if (x.juega && nivel(x.dif)) ps.push(x); }); });
+  ps.sort(function(a,b){ return b.dif - a.dif; });
+  h += '<div class="h2">Props destacadas</div>';
+  h += ps.length ? ps.slice(0,5).map(tarjetaProp).join('') : '<div class="card vacio">Hoy no hay props destacadas.</div>';
+  var si = [], co = [];
+  D.juegos.forEach(function(g){ var e = sc(g); e.si.forEach(function(s){ si.push({g:g, s:s}); }); e.co.forEach(function(c){ co.push({g:g, c:c}); }); });
+  si.sort(function(a,b){ return b.s.ev - a.s.ev; });
+  co.sort(function(a,b){ return b.c.ev - a.c.ev; });
+  h += '<div class="h2">Recomendadas · simples (cuota 1,80 o más)</div>';
+  h += si.length ? si.slice(0,5).map(function(x){ var s = x.s;
+    return '<div class="card"><div class="hl-top"><span class="mk">'+esc(titulo(x.g))+' · '+esc(s.mk)+'</span>'+bdg(s.niv)+'</div><div class="sel">'+esc(s.sel)+'<span class="cuota">'+f(s.cuota,2)+'</span></div><div class="sub">Simulador '+f(s.p,0)+' % · Casa '+f(100/s.cuota,0)+' % · Valor +'+f(s.ev,0)+' %</div></div>'; }).join('') : '<div class="card vacio">Hoy no hay recomendada simple.</div>';
+  h += '<div class="h2">Recomendadas · combinadas del mismo partido</div>';
+  h += co.length ? co.map(function(x){ var c = x.c;
+    return '<div class="card"><div class="hl-top"><span class="mk">'+esc(titulo(x.g))+' · '+c.patas.length+' selecciones</span>'+bdg(c.niv)+'</div>'+
+      c.patas.map(function(l){ return '<div class="combo-leg">· '+esc(l.sel)+' ('+f(l.cuota,2)+')</div>'; }).join('')+
+      '<div class="sub">Juntas salen en el '+f(c.p,0)+' % de las simulaciones</div><div class="sub">Cuota estimada <b>'+f(c.cuota,2)+'</b> · conviene desde <b>'+f(c.desde,2)+'</b></div></div>'; }).join('') : '<div class="card vacio">Hoy no hay combinada que convenga.</div>';
+  return h;
+}
+
+function boxHtml(g){
+  var e = sc(g), t0 = scTodos(g);
+  var cambio = t0 && clave(S.flags[g.id]) !== clave(g.cand.map(function(){return 1;}));
+  var h = '<div class="bx"><div class="bx-h"><span class="bx-team">'+(e.fuera.length ? 'Escenario: fuera '+esc(e.fuera.join(' · ')) : 'Escenario: todos juegan')+'</span></div>';
+  h += '<div class="sub">Proyección: <b>'+esc(proyTxt(g, e))+'</b></div>';
+  if (cambio && t0) h += '<div class="esc">Con todos jugando: '+esc(proyTxt(g, t0))+'</div>';
+  ['spread','total'].forEach(function(t){
+    var x = mejorDe(g, t); if (!x) return;
+    var n = nivel(x.dif); var t0x = t0 ? lineasEv(g, t0)[x.i] : null;
+    h += '<div class="'+rowClase(n)+'"><div class="row-l"><span class="mk">'+(t==='spread'?'Spread':'Total')+'</span><span class="sel">'+esc(x.r.sel)+'<span class="cuota">'+f(x.r.c,2)+'</span></span><span class="sub">Simulador '+f(x.p,0)+' %</span>'+
+      '<span class="esc">'+(cambio && t0x ? 'Con todos jugando: '+f(t0x.p,0)+' %' : 'Sin cambios: todos juegan')+'</span></div><div class="row-r">'+bdg(n)+'</div></div>';
+  });
+  h += '</div>';
+  [['visitante', g.vis], ['local', g.loc]].forEach(function(par){
+    var rows = e.box[par[0]] || []; var tot = 0; rows.forEach(function(r){ tot += (r[2] || 0); });
+    h += '<div class="bx"><div class="bx-h"><span class="bx-team">'+esc(par[1])+'</span><span class="mk">Suma de medianas '+f(tot,0)+' pts</span></div>'+
+      '<div class="bx-r bx-th"><span>Jugador</span><span>MIN</span><span>PTS</span><span>REB</span><span>AST</span><span>3PT</span></div>'+
+      rows.map(function(r){ return '<div class="bx-r"><span class="bx-n">'+esc(r[0])+'</span><span>'+f(r[1],0)+'</span><span><b>'+f(r[2])+'</b></span><span>'+f(r[3])+'</span><span>'+f(r[4])+'</span><span>'+f(r[5])+'</span></div>'; }).join('')+'</div>';
+  });
+  h += '<div class="esc">Medianas de 10.000 simulaciones. Cambian con los botones del injury report. La suma de medianas no es la mediana del total.</div>';
+  return h;
+}
+
+function vistaPartidos(){
+  var h = D.juegos.map(function(g){
+    var e = sc(g);
+    var c = '<div class="card"><div class="g-top"><div class="g-t">'+esc(titulo(g))+'</div><div class="mk">'+(g.ya?'YA JUGADO':'')+'</div></div>';
+    if (g.fijos) c += '<div class="esc">Minutos fijados a mano en este partido.</div>';
+    c += chips(g);
+    c += '<div class="proj">Proyección: '+esc(proyTxt(g, e))+'</div>';
+    var bo = !!S.box[g.id];
+    c += '<button class="boxbtn'+(bo?' boxbtn-on':'')+'" onclick="toggleBox(\''+g.id+'\')">'+(bo?'Ocultar box score':'Ver box score')+'</button>';
+    if (bo) c += boxHtml(g);
+    [['spread','Spread'],['total','Total'],['ml','Ganador']].forEach(function(t){
+      var x = mejorDe(g, t[0]); if (!x) return;
+      var n = nivel(x.dif);
+      c += '<div class="'+rowClase(n)+'"><div class="row-l"><span class="mk">'+t[1]+'</span><span class="sel">'+esc(x.r.sel)+'<span class="cuota">'+f(x.r.c,2)+'</span></span><span class="sub">Simulador '+f(x.p,0)+' % · Casa '+f(x.casa,0)+' %</span></div>'+
+        '<div class="row-r">'+bdg(n)+'<span class="diff">'+difTxt(x.dif)+'</span></div></div>';
+    });
+    return c + '</div>';
+  }).join('');
+  return h + '<div class="demo">Colores: azul "a mirar" (3 a 5 pts) · naranja "fuerte" (5 a 12) · violeta "revisar" (más de 12)</div>';
+}
+
+function vistaProps(){
+  var g = gById(S.pg);
+  var h = '<div class="pills">'+D.juegos.map(function(x){ return '<button class="pill'+(x.id===S.pg?' pill-on':'')+'" onclick="set(\'pg\',\''+x.id+'\')">'+esc(x.vis+' @ '+x.loc)+'</button>'; }).join('')+'</div>';
+  h += '<div class="pills">'+MKS.map(function(m){ return '<button class="pill'+(m===S.mk?' pill-on':'')+'" onclick="set(\'mk\',\''+m+'\')">'+STAT[m]+'</button>'; }).join('')+'</div>';
+  if (!g) return h;
+  if (g.cand.length) h += '<div class="card">'+chips(g)+'</div>';
+  var l = propsEv(g).filter(function(x){ return x.r.st === S.mk; });
+  l.sort(function(a,b){ return (b.juega?b.dif:-999) - (a.juega?a.dif:-999); });
+  if (!l.length) return h + '<div class="card vacio">No hay props de '+STAT[S.mk].toLowerCase()+' cargadas en este partido.</div>';
+  h += l.map(function(x){
+    var r = x.r, n = x.juega ? nivel(x.dif) : '';
+    var c = '<div class="'+cardClase(n)+'"><div class="hl-top"><div class="row-l"><span class="sel">'+esc(r.n)+' <span class="mk">'+esc(r.eq||'')+'</span></span><span class="sub">'+r.m+'+ '+STAT[r.st].toLowerCase()+'<span class="cuota">'+f(r.c,2)+'</span></span></div>'+(x.juega?bdg(n):'<span class="bdg bdg-nada">'+(r.ok?'OUT':'sin cruzar')+'</span>')+'</div>';
+    if (x.juega){
+      c += '<div class="sub">Simulador '+f(x.p,0)+' % · Casa '+f(x.casa,0)+' % · <b>'+difTxt(x.dif)+'</b> · grupo '+r.gr+'</div>';
+      if (r.l5){
+        c += '<div class="l5"><div class="sqs">'+r.l5.map(function(v){ return '<div class="sq '+(v>=r.m?'sq-si':'sq-no')+'">'+v+'</div>'; }).join('')+'</div><div class="hits">'+r.h5+' de '+r.l5.length+' últimos<br>Temporada: '+r.ts[0]+' de '+r.ts[1]+'</div></div>';
+      } else c += '<div class="esc">Sin partidos de esta temporada todavía.</div>';
+    } else c += '<div class="sub">'+(r.ok ? 'Marcado OUT: en este escenario no juega.' : esc(r.motivo||'no pude cruzar el nombre con un jugador de este partido'))+'</div>';
+    return c + '</div>';
+  }).join('');
+  return h;
+}
+
+function tarjetaReg(s){
+  return '<div class="card"><div class="hl-top"><div class="g-t">'+esc(s.t)+'</div><div class="'+(String(s.u).charAt(0)==='+'?'pos':'neg')+'">'+esc(s.u)+'</div></div><div class="stats">'+
+    '<div><div class="big">'+esc(s.ac)+'</div><div class="mk">aciertos</div></div><div><div class="big">'+esc(s.pct)+'</div><div class="mk">% de acierto</div></div><div><div class="big">'+esc(s.eq)+'</div><div class="mk">hace falta</div></div></div>'+
+    (s.niveles ? '<div class="sub">'+esc(s.niveles)+'</div>' : '')+'</div>';
+}
+function vistaRegistro(){
+  var R = D.reg;
+  var regs = [['principal','Spread y total'],['props','Props'],['rec','Recomendadas'],['mias','Mis apuestas'],['hist','Historial']];
+  var h = '<div class="pills">'+regs.map(function(r){ return '<button class="pill'+(r[0]===S.reg?' pill-on':'')+'" onclick="set(\'reg\',\''+r[0]+'\')">'+r[1]+'</button>'; }).join('')+'</div>';
+  h += '<div class="esc">Motor v1 · desde el 24/11 · en unidades (1 apuesta = 1 u)</div>';
+  if (!R) return h + '<div class="card vacio">Todavía no hay partidos medidos con el motor v1. El registro se llena cuando la 21e mide los partidos de cada día.</div>';
+  if (S.reg === 'principal') h += (R.principal||[]).map(tarjetaReg).join('') || '<div class="card vacio">Todavía no hay partidos medidos.</div>';
+  else if (S.reg === 'props'){
+    h += '<div class="pills">'+MKS.map(function(m){ return '<button class="pill'+(m===S.rmk?' pill-on':'')+'" onclick="set(\'rmk\',\''+m+'\')">'+STAT[m]+'</button>'; }).join('')+'</div>';
+    h += '<div class="card"><div class="g-t">'+STAT[S.rmk]+' · por grupo de cuota</div><div class="tr th"><span>Cuota</span><span>Aciertos</span><span>% acierto</span><span>Hace falta</span><span>Unidades</span></div>'+
+      ((R.props||{})[S.rmk]||[]).map(function(w){ return '<div class="tr"><span><b>'+esc(w.g)+'</b></span><span>'+esc(w.ac)+'</span><span>'+esc(w.pct)+'</span><span>'+esc(w.eq)+'</span><span class="'+(String(w.u).charAt(0)==='+'?'pos-s':'neg-s')+'">'+esc(w.u)+'</span></div>'; }).join('')+'</div>';
+  }
+  else if (S.reg === 'rec') h += (R.rec||[]).map(tarjetaReg).join('') || '<div class="card vacio">Las recomendadas se miden desde el 24/11 con lo que guarde la 21d.</div>';
+  else if (S.reg === 'mias'){
+    h += (R.mias||[]).map(tarjetaReg).join('') || '<div class="card vacio">Todavía no hay apuestas tuyas medidas.</div>';
+    h += '<div class="card"><div class="g-t">Últimas cargadas por Sonnet</div>'+((R.bets||[]).map(function(b){ return '<div class="bet"><div class="row-l"><span class="sub"><b>'+esc(b.sel)+'</b><span class="cuota">'+esc(b.cuota)+'</span></span><span class="mk">'+esc(b.origen)+' · '+esc(b.fecha)+'</span></div><span class="'+(String(b.u).charAt(0)==='+'?'pos-s':'neg-s')+'">'+esc(b.u)+'</span></div>'; }).join('') || '<div class="vacio">Todavía no hay apuestas cargadas.</div>')+'</div>';
+  }
+  else h += '<div class="card vacio">'+esc(R.hist || 'Acá queda todo lo anterior al motor v1 (hasta el 23/11). No se mezcla con el registro nuevo.')+'</div>';
+  return h;
+}
+
+function render(){
+  var tabs = [['hoy','Hoy'],['partidos','Partidos'],['props','Props'],['registro','Registro']];
+  var body = S.tab==='hoy' ? vistaHoy() : S.tab==='partidos' ? vistaPartidos() : S.tab==='props' ? vistaProps() : vistaRegistro();
+  var fecha = D.fecha.split('-');
+  document.getElementById('app').innerHTML =
+    '<div class="top"><h1 class="brand">Sims NBA</h1><div class="meta">'+fecha[2]+'/'+fecha[1]+' · '+D.juegos.length+' partidos<br>'+esc(D.motor)+'</div></div>'+
+    '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(S.tab===t[0]?' tab-on':'')+'" onclick="go(\''+t[0]+'\')">'+t[1]+'</button>'; }).join('')+'</div>'+
+    '<div class="body">'+body+'</div>';
+}
+render();
+</script>
+</body>
+</html>
